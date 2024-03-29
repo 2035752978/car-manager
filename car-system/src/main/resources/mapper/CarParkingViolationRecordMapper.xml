@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.manager.system.mapper.CarParkingViolationRecordMapper">
+
+    <select id="selectViolationRecordList" resultType="cn.manager.system.entity.CarParkingViolationRecord">
+        SELECT
+            apvr.id,
+            apvr.no_parking_area,
+            apvr.plate_number,
+            apvr.user_id,
+            apvr.penalty_money,
+            apvr.create_time,
+            apvr.create_by,
+            apvr.update_time,
+            apvr.update_by,
+            apvr.pay_status,
+            apvr.remark,
+            apvr.appoint_id,
+            (case when(apvr.user_id is null )then (select real_name from car_stall_appoint where id = apvr.appoint_id) else
+                su.real_name end)as realName,
+            su.dept_id,
+            sd.dept_name,
+            su.role_id,
+            sdict.dict_name
+        FROM
+            car_parking_violation_record apvr
+                LEFT JOIN system_user su ON apvr.user_id = su.user_id
+                LEFT JOIN system_dept sd ON su.dept_id = sd.dept_id
+                LEFT JOIN system_role sr ON sr.role_id = su.role_id
+                left join system_dict sdict on apvr.no_parking_area = sdict.dict_value and sdict.dict_level =5
+            ${ew.customSqlSegment}
+    </select>
+    <select id="showViolationReport" resultType="cn.manager.common.dto.response.ViolationReportReqDTO">
+        SELECT
+            sd.dept_id ,
+            sum(apvr.penalty_money) as penalty_total_money,
+            COUNT( apvr.id) as `value`,
+            sd.dept_name as name
+        FROM
+            car_parking_violation_record apvr
+                LEFT JOIN system_user su ON apvr.user_id = su.user_id
+                LEFT JOIN system_dept sd ON su.dept_id = sd.dept_id
+            ${ew.customSqlSegment}
+    </select>
+</mapper>

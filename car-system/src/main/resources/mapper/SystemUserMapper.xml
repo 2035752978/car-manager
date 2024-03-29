@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.manager.system.mapper.SystemUserMapper">
+
+    <select id="selectUserList" resultType="cn.manager.system.entity.SystemUser">
+        SELECT
+            system_user.user_id,
+            system_user.dept_id,
+            system_user.real_name,
+            system_user.username,
+            system_user.`password`,
+            system_user.role_id,
+            system_user.email,
+            system_user.phone,
+            system_user.sex,
+            system_user.avatar,
+            system_user.`status`,
+            system_user.login_date,
+            system_user.remark,
+            system_user.create_time,
+            system_dept.dept_name,
+            system_role.role_name
+        FROM
+            system_user
+                LEFT JOIN system_dept ON system_user.dept_id = system_dept.dept_id
+                LEFT JOIN system_role ON system_user.role_id = system_role.role_id
+                where ${ew.SqlSegment}
+
+    </select>
+</mapper>

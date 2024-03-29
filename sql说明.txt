@@ -1,0 +1,108 @@
+utf-8格式
+
+# 数据库业务设计表(1.0版)
+规范行为
+1. 记录所有车辆进出时间（违章信息）
+2. 校园车位余量提示 有余量可以进 没有禁止
+3. 教师 学生 商户 预约有无 四种身份
+4. 违停车辆记录罚款 （默认数据库已经获得）停在非正规区域拍摄的违章记录
+5. 停放费用划分
+6. 停放时间分档 +是否违停(???)
+7. 日周月年 报表显示教职工等违规信息 姓名 车牌号 违停次数 罚款
+8. 学院车辆文明评比（教职工所在学院每月罗列违规车主信息）
+9. 统计数据报表
+
+# ------------------------------------------->
+放入字典表
+garage_num
+1 号门
+2 号门
+3 号门
+4 号门
+5 号门
+
+no_parking_area
+禁止停放区 1
+禁止停放区 2
+禁止停放区 3
+禁止停放区 4
+禁止停放区 5
+
+# ------------------------------------------->
+
+只有查询(弄个一百条 涉及年 月 日)  
+car_parking_violation_record
+id
+no_parking_area 禁停区域
+plate_number
+user_id
+role_id
+penalty_money  罚款
+create_time   创建时间
+create_by     创建人
+update_time   更新时间
+update_by     更新人
+remark
+
+
+# ------------------------------------------->
+
+system_unify_set 系统统一设置
+
+id
+name
+common_str  公共字段(比如开放时间等)
+common_str1  公共字段2(比如结束时间等)
+remark  备注
+
+[1 车位 80  不得超过80] DECR
+[2 开放时间 7:00:00,19:00:00 可预约时间]
+# ------------------------------------------->
+
+car_parking_pay_rule 车辆停放费用规则
+id
+rule_level        规则等级(1级价格 2级价格等)
+rule_msg          规则信息
+available_parking  (秒)计算方式:  2小时 = 2*60*60 =7200秒
+cost_money        消费金额/小时
+
+[1 1 0-2小时 7200 0]
+[1 2 两小时-8小时  28800   2]
+[1 3 8小时以上  14400   3]
+# ------------------------------------------->
+
+car_stall_record 车辆进出时间使用记录
+
+id
+access_type   进出状态(1进 2出)
+garage_num    大门编号
+plate_number  车牌
+user_id       用户id(没有null)
+appoint_id    
+create_time   创建时间
+create_by     创建人
+update_time   更新时间
+update_by     更新人
+status      (0正常计时中,1已结束 ,2违章)  [超出预约时间]
+role_id      (-1游客 其余按照表走)
+total_time   总时间(秒)
+pay_money     需要缴纳费用
+remark
+
+# ------------------------------------------->
+
+car_stall_appoint 车辆预约记录
+id
+appoint_order_num   预约单号
+plate_numbe   车牌号
+phone         电话号
+id_card_num   身份证号
+ap_time       预约时间
+create_time   创建时间
+create_by     创建人
+update_time   更新时间
+update_by     更新人
+ap_status     预约状态(0 已预约  1已结束)
+remark
+
+# ------------------------------------------->

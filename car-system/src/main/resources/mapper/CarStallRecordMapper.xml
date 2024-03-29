@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.manager.system.mapper.CarStallRecordMapper">
+
+
+    <select id="showStallRecordList" resultType="cn.manager.common.dto.response.CarStallRecordRespDTO">
+        SELECT
+            csr.* ,
+            sdict.dict_name as inGarageName,
+            sdict1.dict_name as outGarageName,
+            su.real_name,
+            su.phone,
+            csa.ap_order_num,
+            csa.phone as apPhone,
+            csa.real_name as apRealName
+        FROM
+            car_stall_record csr
+                LEFT JOIN system_user su on csr.user_id = su.user_id
+                LEFT JOIN car_stall_appoint csa on csa.id = csr.ap_order_id
+                left join system_dict sdict on csr.in_garage_num = sdict.dict_value and sdict.dict_level =4
+                left join system_dict sdict1 on csr.out_garage_num = sdict1.dict_value and sdict1.dict_level =4
+            ${ew.customSqlSegment}
+    </select>
+    <select id="selectStallAnalyseCompare" resultType="cn.manager.common.dto.response.StallCompareRespDTO">
+        SELECT
+            sum( csr.total_time ) AS parkTotalTime,
+            sum( csr.pay_money ) AS payTotalMoney,
+            su.user_id,
+            su.dept_id,
+            sd.dept_name,
+            su.real_name,
+            su.phone,
+            su.role_id,
+            sr.role_name
+        FROM
+            car_stall_record csr
+                LEFT JOIN system_user su ON csr.user_id = su.user_id
+                LEFT JOIN system_dept sd ON su.dept_id = sd.dept_id
+                LEFT JOIN system_role sr ON sr.role_id = su.role_id
+            ${ew.customSqlSegment}
+    </select>
+
+</mapper>
