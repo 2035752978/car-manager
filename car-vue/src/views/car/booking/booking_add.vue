@@ -24,9 +24,14 @@
                     </el-input>
                 </div>
                 <div class="list">
-                    <div class="l_title"><b>*</b>预约人电话</div>
-                    <el-input placeholder="请输入内容" type="number" clearable v-model="list.phone">
+                    <div class="l_title"><b>*</b>预约人</div>
+                    <el-input
+                        placeholder="请输入手机号"
+                        clearable
+                        v-model="list.phone"
+                        @input="validatePhone">
                     </el-input>
+                    <span class="error">{{ phoneError }}</span>
                 </div>
                 <div class="list">
                     <div class="l_title"><b>*</b>开始时间</div>
@@ -71,6 +76,17 @@ export default {
         }, 10);
     },
     methods: {
+        validatePhone() {
+            const phoneRegex = /^1\d{10}$/;
+            if (!this.list.phone) {
+                this.phoneError = '手机号不能为空';
+            } else if (!phoneRegex.test(this.list.phone)) {
+                this.phoneError = '手机号格式不正确';
+            } else {
+                this.phoneError = '';
+            }
+        },
+
         add() {
 
             let params = {
@@ -264,5 +280,8 @@ export default {
     line-height: 60px;
     text-align: center;
     margin-left: 2%;
+}
+.error {
+    color: red;
 }
 </style>

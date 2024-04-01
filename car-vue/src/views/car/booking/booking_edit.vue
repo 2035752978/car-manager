@@ -25,8 +25,13 @@
                 </div>
                 <div class="list">
                     <div class="l_title"><b>*</b>预约人电话</div>
-                    <el-input placeholder="请输入内容" type="number" clearable v-model="list.phone">
+                    <el-input
+                        placeholder="请输入手机号"
+                        clearable
+                        v-model="list.phone"
+                        @input="validatePhone">
                     </el-input>
+                    <span class="error">{{ phoneError }}</span>
                 </div>
                 <div class="list">
                     <div class="l_title"><b>*</b>开始时间</div>
@@ -74,7 +79,9 @@ export default {
             list: "",
             show: false,
             value: '',
-            value1: ''
+            value1: '',
+            phoneError: '',
+
         };
     },
     created() {
@@ -86,6 +93,26 @@ export default {
         this.list = JSON.parse(localStorage.getItem('setBookingData'));
     },
     methods: {
+        validatePhone() {
+            const phoneRegex = /^1\d{10}$/;
+            if (!this.list.phone) {
+                this.phoneError = '手机号不能为空';
+            } else if (!phoneRegex.test(this.list.phone)) {
+                this.phoneError = '手机号格式不正确';
+            } else {
+                this.phoneError = '';
+            }
+        },
+        validateEmail() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!this.list.email) {
+                this.emailError = '邮箱地址不能为空';
+            } else if (!emailRegex.test(this.list.email)) {
+                this.emailError = '邮箱地址格式不正确';
+            } else {
+                this.emailError = '';
+            }
+        },
         edit() {
             if (this.value == '') {
                 this.value = this.list.apBeginTime;
@@ -290,5 +317,8 @@ export default {
     line-height: 60px;
     text-align: center;
     margin-left: 2%;
+}
+.error {
+    color: red;
 }
 </style>

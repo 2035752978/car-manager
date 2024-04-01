@@ -30,8 +30,13 @@
                 </div>
                 <div class="list">
                     <div class="l_title"><b>*</b>手机号</div>
-                    <el-input placeholder="请输入内容" clearable v-model="list.phone">
+                    <el-input
+                        placeholder="请输入手机号"
+                        clearable
+                        v-model="list.phone"
+                        @input="validatePhone">
                     </el-input>
+                    <span class="error">{{ phoneError }}</span>
                 </div>
                 <div class="list">
                     <div class="l_title"><b>*</b>性别</div>
@@ -43,8 +48,13 @@
                 </div>
                 <div class="list">
                     <div class="l_title"><b>*</b>用户邮箱</div>
-                    <el-input placeholder="请输入内容" clearable v-model="list.email">
+                    <el-input
+                        placeholder="请输入邮箱地址"
+                        clearable
+                        v-model="list.email"
+                        @input="validateEmail">
                     </el-input>
+                    <span class="error">{{ emailError }}</span>
                 </div>
                 <div class="list">
                     <div class="l_title"><b>*</b>备注</div>
@@ -98,6 +108,8 @@ export default {
             value2: '',
             page: 1, //当前页
             pnum: 100, //每页显示多少条
+            phoneError: '',
+            emailError: '',
         };
     },
     created() {
@@ -111,6 +123,27 @@ export default {
         this.getPosts();
     },
     methods: {
+
+        validatePhone() {
+            const phoneRegex = /^1\d{10}$/;
+            if (!this.list.phone) {
+                this.phoneError = '手机号不能为空';
+            } else if (!phoneRegex.test(this.list.phone)) {
+                this.phoneError = '手机号格式不正确';
+            } else {
+                this.phoneError = '';
+            }
+        },
+        validateEmail() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!this.list.email) {
+                this.emailError = '邮箱地址不能为空';
+            } else if (!emailRegex.test(this.list.email)) {
+                this.emailError = '邮箱地址格式不正确';
+            } else {
+                this.emailError = '';
+            }
+        },
         getRoles() {
             let params = {
                 page: this.page,
@@ -357,5 +390,8 @@ export default {
     line-height: 60px;
     text-align: center;
     margin-left: 2%;
+}
+.error {
+    color: red;
 }
 </style>
