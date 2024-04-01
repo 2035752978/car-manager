@@ -20,4 +20,8 @@ public interface SystemUnifySetService extends IService<SystemUnifySet> {
     void refreshUnifySet();
 
     void editUnifySet(SystemUnifySet systemUnifySet);
+
+    int availableParking();
+
+    int wholeParking();
 }

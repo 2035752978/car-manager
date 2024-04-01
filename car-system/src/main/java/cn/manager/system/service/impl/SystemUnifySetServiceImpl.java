@@ -4,6 +4,7 @@ import cn.manager.common.constant.CacheConstants;
 import cn.manager.common.enums.ResponseEnum;
 import cn.manager.common.exception.ServiceException;
 import cn.manager.system.entity.SystemUnifySet;
+import cn.manager.system.mapper.CarStallRecordMapper;
 import cn.manager.system.mapper.SystemUnifySetMapper;
 import cn.manager.system.service.SystemUnifySetService;
 import cn.manager.system.utils.redis.RedisCacheUtils;
@@ -14,6 +15,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -33,6 +35,10 @@ import java.util.List;
 public class SystemUnifySetServiceImpl extends ServiceImpl<SystemUnifySetMapper, SystemUnifySet> implements SystemUnifySetService {
 
     private final RedisCacheUtils redisCacheUtils;
+    @Autowired
+    private SystemUnifySetMapper systemUnifySetMapper;
+    @Autowired
+    private CarStallRecordMapper carStallRecordMapper;
 
     @Override
     public List<SystemUnifySet> showUnifySetList(SystemUnifySet systemUnifySet) {
@@ -68,6 +74,20 @@ public class SystemUnifySetServiceImpl extends ServiceImpl<SystemUnifySetMapper,
 
         //刷新缓存
         refreshUnifySet();
+    }
+
+    @Override
+    public int availableParking() {
+        //获取当前可用停车位
+        int wholeParking = systemUnifySetMapper.getWholeParking();
+        int usedParking = carStallRecordMapper.getUsedParking();
+        return wholeParking - usedParking;
+
+    }
+
+    @Override
+    public int wholeParking() {
+        return systemUnifySetMapper.getWholeParking();
     }
 
     @Override

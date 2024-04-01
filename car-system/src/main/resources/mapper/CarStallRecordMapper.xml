@@ -39,5 +39,13 @@
                 LEFT JOIN system_role sr ON sr.role_id = su.role_id
             ${ew.customSqlSegment}
     </select>
+    <select id="getUsedParking" resultType="java.lang.Integer">
+        SELECT
+            count( * ) AS usedParking
+        FROM
+            car_stall_record
+        WHERE
+            access_type = 1
+    </select>
 
 </mapper>

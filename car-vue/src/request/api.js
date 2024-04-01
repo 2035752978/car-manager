@@ -157,3 +157,7 @@ export const addPark = (params) => request.post('/car/carViolation/addViolation'
 export const editPark = (params) => request.put('/car/carViolation/editViolation',  params );
 // 查询车牌
 export const delPark = (params) => request.delete(`/car/carViolation/delViolation/${params}`);
+
+export const getAvailableParking = (params) => request.get('/car/utils/availableParking');
+
+export const getWholeParking = (params) => request.get('/car/utils/wholeParking');

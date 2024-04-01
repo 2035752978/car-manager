@@ -2,6 +2,7 @@ package cn.manager.system.mapper;
 
 import cn.manager.system.entity.SystemUnifySet;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author ljc
  * @since 2024-03-19
  */
+@Mapper
 public interface SystemUnifySetMapper extends BaseMapper<SystemUnifySet> {
 
+    int getWholeParking();
 }

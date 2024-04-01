@@ -2,4 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.manager.system.mapper.SystemUnifySetMapper">
 
+    <select id="getWholeParking" resultType="java.lang.Integer">
+        SELECT common_str1 FROM system_unify_set WHERE id = 2
+    </select>
+
 </mapper>
