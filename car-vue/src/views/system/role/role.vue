@@ -38,15 +38,27 @@
                   <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip align="center"></el-table-column>
                     <el-table-column label="操作" align="center">
                         <template slot-scope="scope">
-                            <el-link icon="el-icon-edit-outline" v-if="scope.row.roleId != 1"
-                                style="font-size: 12px; color: #409eff" @click="edit(scope.row)"
-                                :underline="false">编辑</el-link>
-                            <el-link icon="el-icon-edit-outline"
-                                style="font-size: 12px; margin-left: 20px; color: #67c23a" @click="assign(scope.row)"
-                                v-if="scope.row.roleId != 1" :underline="false">分配权限</el-link>
-                            <el-link icon="el-icon-delete" v-if="scope.row.roleId != 1"
-                                style="margin-left: 20px; font-size: 12px; color: #f56c6c"
-                                @click="del(scope.$index + 1, scope.row)" :underline="false">删除</el-link>
+                            <el-button
+                                size="mini"
+                                type="primary"
+                                icon="el-icon-edit"
+                                @click="edit(scope.row)"
+                                v-if="scope.row.roleId != 1"
+                            >编辑</el-button>
+                            <el-button
+                                size="mini"
+                                type="success"
+                                icon="el-icon-key"
+                                @click="assign(scope.row)"
+                                v-if="scope.row.roleId != 1"
+                            >分配权限</el-button>
+                            <el-button
+                                size="mini"
+                                type="danger"
+                                icon="el-icon-delete"
+                                @click="del(scope.$index + 1, scope.row)"
+                                v-if="scope.row.roleId != 1"
+                            >删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

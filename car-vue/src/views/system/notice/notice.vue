@@ -37,10 +37,8 @@
                     </el-table-column>
                     <el-table-column label="操作" align="center">
                         <template slot-scope="scope">
-                            <el-link icon="el-icon-edit-outline" style="font-size: 12px; color: #409eff"
-                                @click="edit(scope.row)" :underline="false">编辑</el-link>
-                            <el-link icon="el-icon-delete" style="margin-left: 20px; font-size: 12px; color: #f56c6c"
-                                @click="del(scope.$index + 1, scope.row)" :underline="false">删除</el-link>
+                            <el-button type="primary" size="mini" icon="el-icon-edit" @click="edit(scope.row)" >编辑</el-button>
+                            <el-button type="danger" size="mini" icon="el-icon-delete" @click="del(scope.$index + 1, scope.row)" style="margin-left: 10px;">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

@@ -1,25 +1,32 @@
 <template>
-  <div class="main">
-    <div class="loginBox">
-      <div class="title">校内车辆出入管理系统</div>
-      <el-form ref="form" :model="form" class="loginInfo">
-        <el-form-item>
-          <el-input v-model="form.userName" placeholder="请输入账号" clearable style="width: 24.3vw;"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input v-model="form.password" placeholder="请输入密码" clearable show-password
-            style=" width: 24.3vw;"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input v-model="form.code" placeholder="请输入验证码" clearable style="width: 18vw;"></el-input>
-          <div class="identifybox" @click="refreshCode">
-            <sidentify :identifyCode="identifyCode"></sidentify>
-          </div>
-        </el-form-item>
-        <el-button type="primary" round @click="login">登录</el-button>
-      </el-form>
+    <div class="main">
+        <div class="loginBox">
+            <!-- 标题部分 -->
+            <div class="title">校内车辆出入管理系统</div>
+            <!-- 登录表单 -->
+            <el-form ref="form" :model="form" class="loginInfo">
+                <!-- 用户名输入框 -->
+                <el-form-item>
+                    <el-input v-model="form.userName" placeholder="请输入账号" clearable></el-input>
+                </el-form-item>
+                <!-- 密码输入框 -->
+                <el-form-item>
+                    <el-input v-model="form.password" type="password" placeholder="请输入密码" clearable show-password></el-input>
+                </el-form-item>
+                <!-- 验证码部分 -->
+                <el-form-item class="codeBox">
+                    <el-input v-model="form.code" placeholder="请输入验证码" clearable></el-input>
+                    <div class="identifybox" @click="refreshCode">
+                        <sidentify :identifyCode="identifyCode"></sidentify>
+                    </div>
+                </el-form-item>
+                <!-- 登录按钮 -->
+                <el-form-item class="buttonItem">
+                    <el-button type="primary" round @click="login">登录</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -100,63 +107,71 @@ export default {
 
 
 <style scoped>
+/*.main {*/
+/*    display: flex;*/
+/*    align-items: center; !* 居中对齐 *!*/
+/*    justify-content: center; !* 水平居中 *!*/
+/*    !*background: url('../../assets/carBanner.jpg') no-repeat;*!*/
+/*    background: url('https://qiniu-pic.atri.wiki/img/ljcbj.png') no-repeat center center; !* 背景图片 *!*/
+/*    background-size: cover; !* 背景图片覆盖整个容器 *!*/
+/*}*/
 .main {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  /* flex-direction: row; */
-  align-items: center;
-  justify-content: center;
-  background: url('../../assets/carBanner.jpg') no-repeat;
-  background-size: 100% 100%;
+    display: flex;
+    /*align-items: flex-start; !* 调整对齐到顶部 *!*/
+    /*justify-content: flex-end; !* 调整对齐到右边 *!*/
+        align-items: center; /* 居中对齐 */
+        justify-content: center; /* 水平居中 */
+    height: 90vh;
+    /*padding-right: 5%; !* 右边距 *!*/
+    padding-top: 5%; /* 顶部距离 */
+    background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
+    url('https://qiniu-pic.atri.wiki/img/ljcbj2.jpg') no-repeat center center; /* 添加渐变效果并保持背景图片 */
+    background-size: cover;
 }
 
 .title {
-  width: 100%;
-  height: 60px;
-  line-height: 60px;
-  text-align: center;
-  font-size: 30px;
-  color: #0ba5ff;
+    margin-bottom: 1rem; /* 标题下方的间隔 */
+    font-size: 1.8rem; /* 标题字体大小 */
+    color: #106ba3; /* 标题字体颜色 */
 }
 
 .loginBox {
-  width: 35vw;
-  height: 45vh;
-  background-color: #fffcd3;
-  border-radius: 25px;
-  border: 1px solid #848484;
-  padding: 20px;
+    width: 300px; /* 可以根据需要调整登录框宽度 */
+    padding: 2rem; /* 内部间距 */
+    background-color: rgba(255, 255, 255, 0.9); /* 背景颜色，轻微透明 */
+    border-radius: 1rem; /* 边角圆滑度 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 盒子阴影效果 */
 }
 
 .loginInfo {
-  width: 70%;
-  height: 75%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 40px;
-  margin: 0 auto;
+    display: flex;
+    flex-direction: column; /* 项目垂直排列 */
+    align-items: center; /* 水平居中对齐 */
+}
 
-  .el-form-item {
+.el-form-item {
+    margin-bottom: 1rem; /* 表单项下方间隔 */
+}
+
+/* 输入框和按钮宽度统一 */
+.el-input,
+.el-button {
     width: 100%;
-    height: 25%;
-    margin: 0;
-    display: flex;
-    /* justify-content: center; */
+}
 
-  }
+/* 验证码部分样式调整 */
+.codeBox {
+    display: flex; /* 使用flex布局 */
+    justify-content: space-between; /* 两端对齐 */
+}
 
-  /deep/.el-form-item__content {
-    display: flex;
-    flex-direction: row;
-  }
+/* 登录按钮位置调整 */
+.buttonItem {
+    margin-top: 1rem; /* 按钮上方间隔 */
+}
 
-
-  button {
-    width: 240px;
-    height: 40px;
-  }
+.identifybox {
+    cursor: pointer; /* 鼠标悬浮时手型指针 */
+    /* 可以在这里为验证码框添加特定的样式 */
 }
 </style>

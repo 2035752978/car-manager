@@ -47,10 +47,42 @@ export default {
   },
   created() {
     this.dataList = JSON.parse(localStorage.getItem('listData'));
+      // this.setDefaultOpeneds();
+
+      // 为每个菜单项设置图标样式
+      this.dataList.forEach(item => {
+          switch (item.label) {
+              case '首页':
+                  item.icon = 'el-icon-house';
+                  break;
+              case '系统管理':
+                  item.icon = 'el-icon-setting';
+                  break;
+              case '用户管理':
+                  item.icon = 'el-icon-user';
+                  break;
+              case '车辆管理':
+                  item.icon = 'el-icon-truck';
+                  break;
+              case '统计报表':
+                  item.icon = 'el-icon-document';
+                  break;
+              // 为其他菜单项添加更多 case 语句
+              // ...
+          }
+          // 如果菜单项有子菜单，也为它们设置图标
+          if (item.children && item.children.length > 0) {
+              item.children.forEach(child => {
+                          child.icon = 'el-icon-setting';
+              });
+          }
+      });
+
      this.setDefaultOpeneds();
     eventBus.$on('showMessage', ({ type, message }) => {
       this.showMessage(type, message);
     });
+
   },
   mounted() { },
   methods: {
@@ -72,14 +104,26 @@ export default {
     menuSelect(index) {
       this.activeIndex = index;
     },
-     setDefaultOpeneds() {  
-      // 假设你有一个方法可以根据用户的权限获取默认展开的菜单项索引  
-      // 这里只是一个示例，你需要根据你的实际逻辑来实现  
-      const userPermissions = JSON.parse(localStorage.getItem('listData')); // 假设权限数据存储在这里  
-      const defaultOpenIndexes = userPermissions.map(permission => permission.id); // 假设每个权限对象都有一个menuIndex属性  
-      this.defaultOpeneds = defaultOpenIndexes; // 设置defaultOpeneds为计算得到的索引数组  
-      console.log(defaultOpeneds)
-    }, 
+      setDefaultOpeneds() {
+          // 初始化一个空数组来收集所有的 'id'。
+          let openeds = [];
+
+          // 添加顶级菜单 'id'
+          openeds = this.dataList.map(item => item.id);
+
+          // 添加子菜单 'id'
+          this.dataList.forEach((item) => {
+              if (item.children && item.children.length > 0) {
+                  item.children.forEach((child) => {
+                      openeds.push(child.id);
+                  });
+              }
+          });
+
+          // 设置 defaultOpeneds 为所有收集到的 'id'
+          this.defaultOpeneds = openeds;
+      },
+
     showMessage(type, message) {
       Message({
         type: type,
@@ -110,11 +154,12 @@ export default {
   border: 0;
   color: #ffffff;
   font-weight: bold;
-  font-size: 25px;
+  font-size: 19px;
 }
 
 .title img {
   vertical-align: middle;
+
 }
 
 .el-aside {
@@ -145,18 +190,18 @@ export default {
 }
 
 .el-menu>>>.el-menu--inline {
-  background: #242832;
+  background: #fff;
   text-align: center;
   color: #feb822;
 }
 
 .el-menu>>>.el-menu-item {
-  background: #242832;
+  /*background: #242832;*/
   color: #959999;
 }
 
 .el-menu>>>.el-menu-item:hover {
-  background-color: #765d21;
+  background-color: #fff;
   color: #ffffff;
 }
 
@@ -190,4 +235,19 @@ export default {
   opacity: 0;
   transition: opacity 0.5s;
 }
+
+/* 调整菜单项的样式，使图标和文本居中对齐 */
+.el-menu-item {
+    display: flex;
+    align-items: center;
+}
+
+/* 图标的样式 */
+.el-menu-item i {
+    font-size: 20px; /* 或者你想要的尺寸 */
+    margin-right: 8px; /* 文本和图标之间的距离 */
+}
+
+
+
 </style>
