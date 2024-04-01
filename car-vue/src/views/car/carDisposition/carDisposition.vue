@@ -32,12 +32,10 @@
                   <el-table-column prop="commonStr" label="配置1" show-overflow-tooltip align="center"></el-table-column>
                   <el-table-column prop="commonStr1" label="配置2" show-overflow-tooltip align="center"> </el-table-column>
                   <el-table-column prop="remark" label="备注" show-overflow-tooltip align="center"> </el-table-column>
-
+                    
                     <el-table-column label="操作" align="center">
                         <template slot-scope="scope">
-                            <el-link icon="el-icon-edit-outline" v-if="scope.row.roleId != 1"
-                                style="font-size: 12px; color: #409eff" @click="edit(scope.row)"
-                                :underline="false">编辑</el-link>
+                            <el-button type="primary" size="mini" icon="el-icon-edit" @click="edit(scope.row)" >编辑</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
