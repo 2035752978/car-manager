@@ -27,4 +27,7 @@
                 where ${ew.SqlSegment}
 
     </select>
+    <select id="getUserById" resultType="cn.manager.system.entity.SystemUser">
+        SELECT * FROM system_user WHERE user_id = #{userId}
+    </select>
 </mapper>

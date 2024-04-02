@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import com.baomidou.mybatisplus.core.toolkit.Constants;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -18,6 +19,7 @@ import org.apache.ibatis.annotations.Select;
  * @author ljc
  * @since 2024-03-04
  */
+@Mapper
 public interface SystemUserMapper extends BaseMapper<SystemUser> {
 
     /**
@@ -33,4 +35,6 @@ public interface SystemUserMapper extends BaseMapper<SystemUser> {
      * 查询用户信息
      */
     IPage<SystemUser> selectUserList(IPage<SystemUser> iPage, @Param(Constants.WRAPPER) QueryWrapper<SystemUser> queryWrapper);
+
+    SystemUser getUserById(Long userId);
 }

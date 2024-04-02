@@ -11,17 +11,20 @@ import cn.manager.system.entity.CarParkingViolationRecord;
 import cn.manager.system.entity.CarStallAppoint;
 import cn.manager.system.entity.CarUserRecord;
 import cn.manager.system.entity.SystemUser;
+import cn.manager.system.mapper.SystemUserMapper;
 import cn.manager.system.service.CarParkingViolationRecordService;
 
 import cn.manager.system.service.CarStallAppointService;
 import cn.manager.system.service.CarUserRecordService;
 import cn.manager.system.service.SystemUserService;
+import cn.manager.system.utils.SendMailUtil;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +52,8 @@ public class CarParkingViolationRecordController {
 
     private final CarStallAppointService carStallAppointService;
 
+    @Autowired
+    private SystemUserMapper systemUserMapper;
     /**
      * 02-添加车辆违停罚款记录
      */
@@ -83,6 +88,22 @@ public class CarParkingViolationRecordController {
 
         carParkingViolationRecord.setId(IdGenerateUtils.getInstance().nextId());
         carParkingViolationRecordService.save(carParkingViolationRecord);
+        if (carUserRecord != null) {
+            SystemUser user = systemUserMapper.getUserById(carUserRecord.getUserId());
+            if (user != null && StringUtils.isNotBlank(user.getEmail())) {
+                // 发送邮件
+                // sendMailUtil.sendMail(user.getEmail(), "校园车辆违规提醒", "尊敬的用户您好，您的车辆存在违规行为，请及时处理，谢谢！");
+                SendMailUtil sendMailUtil = new SendMailUtil();
+                try {
+                    sendMailUtil.sendMail(user.getEmail(),
+                            carParkingViolationRecord.getPlateNumber(),
+                            carParkingViolationRecord.getNoParkingArea(),
+                            carParkingViolationRecord.getPenaltyMoney() );
+                } catch (Exception e) {
+                    log.error("发送邮件失败", e);
+                }
+            }
+        }
 
         return ResultResponse.booleanToResponse(true);
     }

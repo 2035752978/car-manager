@@ -43,3 +43,9 @@ logging:
     cn.manager: debug
     org.springframework: warn
 
+# 发送邮件邮箱配置
+mail:
+  sender-mail:    # 发件人邮箱
+  host: smtp.163.com                   # 发件邮箱主机
+  password:        # 发件邮箱密钥授权码
+
